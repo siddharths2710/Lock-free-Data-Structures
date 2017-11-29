@@ -13,10 +13,10 @@ extern mutex mtx;
 class Stack
 {
 	private:
-		Node * top;
+		atomic<Node *> top;
 	public:
 		Stack();
-		void push(Node *n);	
+		void push(void *n);	
 		Node* pop_lockfree();
 		Node* pop_lock();
 		Node* get_top();
