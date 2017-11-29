@@ -7,27 +7,29 @@ Stack::Stack():top(NULL){
 
 }
 
-void Stack::push(Node *n)
+void Stack::push(void *np)
 {
+	Node *n = (Node*)np;
 	while(1)
 	{
-		Node * old_top = this->top;
+		Node * old_top = this->top.load(memory_order_relaxed);
 		n->setNext(old_top);
-		if ( atomic_compare_exchange_weak( (atomic<Node>*)this->top, old_top, *n) )
+		if ( (this->top).compare_exchange_weak( old_top, n,memory_order_release,memory_order_relaxed) )
       		return;
 	}	
 }
+
 
 Node* Stack::pop_lockfree()
 {
 	while(1)
 	{
-		Node *top = this->top;
+		Node *top = this->top.load(memory_order_relaxed);
 		if(top == NULL)
 			return NULL;
 		Node * new_top = top->getNext();
-		if( atomic_compare_exchange_weak( (atomic<Node>*)this->top, top, *new_top) )
-			return this->top;
+		if( (this->top).compare_exchange_weak( top, new_top,memory_order_release,memory_order_relaxed) )
+			return this->top.load(memory_order_relaxed);
 	}
 }
 
@@ -35,7 +37,7 @@ Node* Stack::pop_lock()
 {
 	mtx.lock();
 
-	Node *top = this->top;
+	Node *top = this->top.load(memory_order_relaxed);
 	if(top == NULL)
 		return NULL;
 	top = top->getNext();
@@ -47,7 +49,7 @@ Node* Stack::pop_lock()
 
 Node* Stack::get_top()
 {
-	return this->top;
+	return this->top.load(memory_order_relaxed);
 }
 
 ostream& operator<<(ostream &obj,  Stack &s)
@@ -61,5 +63,5 @@ ostream& operator<<(ostream &obj,  Stack &s)
 	}
 
 	obj<<"NULL\n";
-	return obj;
+	return obj;	
 }
