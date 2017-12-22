@@ -1,4 +1,4 @@
-#include "stack.h"
+#include "locked_stack.h"
 #include <iostream>
 #include <pthread.h>
 #include <time.h> 
@@ -6,34 +6,38 @@
 using namespace std;
 
 #define NUM_THREADS 2
+#define NO_ELE 1000000
 void* pushone(void *sp)
 {
-	Stack* s = (Stack*) sp;
-	Node* a = new Node(1);
-	cout << "Pushing 1\n";
-	s->push(a);
+	LockedStack<int>* s = (LockedStack<int>*) sp;
+	for (int i = 1; i < NO_ELE; i += 2) {
+		// Node<int>* a = new Node<int>(i);
+		// cout << "Pushing 1\n";
+		s->push(i);
+		// cout << "Pushed 1\n";
+	}
 	// pthread_exit(NULL);
-	cout << "Pushed 1\n";
 	return NULL;
 }
 
 void* pushtwo(void *sp)
 {
-	Stack* s = (Stack*) sp;
-	Node* a = new Node(2);
-	cout << "Pushing 2\n";
-	s->push(a);
+	LockedStack<int>* s = (LockedStack<int>*) sp;
+	for (int i = 2; i < NO_ELE; i += 2) {
+		// Node<int>* a = new Node<int>(i);
+		// cout << "Pushing 1\n";
+		s->push(i);
+		// cout << "Pushed 1\n";
+	}
 	// pthread_exit(NULL);
-	cout << "Pushed 2\n";
 	return NULL;
 }
 
 int main(int argc, char const *argv[])
 {
-	
-	srand (time(NULL));
+	srand(time(NULL));
 
-	Stack* s = new Stack();
+	LockedStack<int>* s = new LockedStack<int>();
 	
 	pthread_t threads[NUM_THREADS];
 	// Node *a = new Node(1);
@@ -54,7 +58,7 @@ int main(int argc, char const *argv[])
 
 	// cout << "Joined\n";
 	
-	cout << (*s);
+	// cout << (*s);
 	cout << endl;
 
 	return 0;

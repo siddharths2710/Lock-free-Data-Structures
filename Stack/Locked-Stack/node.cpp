@@ -1,33 +1,33 @@
 #include "node.h"
 
-Node::Node(): data(0),next(nullptr){
+// Node::Node(): data(0),next(nullptr){}
 
-}
+template<typename T>
+Node<T>::Node(T d): data(d), next(nullptr) {}
 
-Node::Node(int d): data(d),next(nullptr){
+template<typename T>
+Node<T>::Node(T d, Node<T>* n): data(d), next(n) {}
 
-}
-
-Node::Node(int d,Node *n): data(d),next(n){
-
-}
-
-void Node::setData(int d)
+template<typename T>
+void Node<T>::set_data(T d)
 {
 	this->data = d;
-}	
+}
 
-void Node::setNext(Node *n)
+template<typename T>
+void Node<T>::set_next(Node<T>* n)
 {
 	this->next = n;
 }
 
-int Node::getData()
+template<typename T>
+T Node<T>::get_data()
 {
 	return this->data; 
 }
 
-Node* Node::getNext()
+template<typename T>
+Node<T>* Node<T>::get_next()
 {
 	return this->next;
 }

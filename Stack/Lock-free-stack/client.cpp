@@ -5,21 +5,31 @@
 using namespace std;
 
 #define NUM_THREADS 2
+#define NO_ELE 1000000
 void* pushone(void *sp)
 {
-	Node *a = new Node(1);
-	Stack *s = (Stack*)sp;
-	s->push(a);
-	pthread_exit(NULL);
+	Stack* s = (Stack*) sp;
+	for (int i = 1; i < NO_ELE; i += 2) {
+		Node* a = new Node(i);
+		// cout << "Pushing 1\n";
+		s->push(a);
+		// cout << "Pushed 1\n";
+	}
+	// pthread_exit(NULL);
+	return NULL;
 }
-
 
 void* pushtwo(void *sp)
 {
-	Node *a = new Node(2);
-	Stack *s = (Stack*)sp;
-	s->push(a);
-	pthread_exit(NULL);
+	Stack* s = (Stack*) sp;
+	for (int i = 2; i < NO_ELE; i += 2) {
+		Node* a = new Node(i);
+		// cout << "Pushing 1\n";
+		s->push(a);
+		// cout << "Pushed 1\n";
+	}
+	// pthread_exit(NULL);
+	return NULL;
 }
 
 int main(int argc, char const *argv[])
@@ -46,7 +56,7 @@ int main(int argc, char const *argv[])
 	pthread_join(threads[0],NULL);
 	pthread_join(threads[1],NULL);
 	
-	cout << (*s);
+	// cout << (*s);
 	cout << endl;
 
 	return 0;
