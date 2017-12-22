@@ -2,32 +2,26 @@
 
 // Node::Node(): data(0),next(nullptr){}
 
-template<typename T>
-Node<T>::Node(T d): data(d), next(nullptr) {}
+Node::Node(int d): data(d), next(nullptr) {}
 
-template<typename T>
-Node<T>::Node(T d, Node<T>* n): data(d), next(n) {}
+Node::Node(int d, Node* n): data(d), next(n) {}
 
-template<typename T>
-void Node<T>::set_data(T d)
+void Node::set_data(int d)
 {
 	this->data = d;
 }
 
-template<typename T>
-void Node<T>::set_next(Node<T>* n)
+void Node::set_next(Node* n)
 {
 	this->next = n;
 }
 
-template<typename T>
-T Node<T>::get_data()
+int Node::get_data()
 {
 	return this->data; 
 }
 
-template<typename T>
-Node<T>* Node<T>::get_next()
+Node* Node::get_next()
 {
 	return this->next;
 }

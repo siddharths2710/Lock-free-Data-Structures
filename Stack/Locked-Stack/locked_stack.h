@@ -9,18 +9,17 @@
 #include <pthread.h>
 
 using namespace std;
-template<typename T>
 class LockedStack
 {
 	private:
-		Node<T>* top;
+		Node* top;
 		mutex mtx;
 	public:
 		LockedStack();
-		void push(T);
-		T& pop();
-		T& peek();
-		friend ostream& operator<<(ostream &obj, LockedStack<T> &s);
+		void push(int);
+		int pop();
+		int peek();
+		friend ostream& operator<<(ostream &obj, LockedStack& s);
 };
 
 #endif
