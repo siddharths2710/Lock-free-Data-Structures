@@ -1,10 +1,10 @@
 #include "node.h"
 
-Node::Node(): data(NULL),next(NULL){
+Node::Node(): data(0),next(nullptr){
 
 }
 
-Node::Node(int d): data(d),next(NULL){
+Node::Node(int d): data(d),next(nullptr){
 
 }
 

@@ -1,7 +1,6 @@
 #ifndef NODE
 #define NODE
 
-#define NULL 0
 
 class Node
 {
