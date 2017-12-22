@@ -14,6 +14,7 @@ void* pushone(void *sp)
 	s->push(a);
 	// pthread_exit(NULL);
 	cout << "Pushed 1\n";
+	return NULL;
 }
 
 void* pushtwo(void *sp)
@@ -24,6 +25,7 @@ void* pushtwo(void *sp)
 	s->push(a);
 	// pthread_exit(NULL);
 	cout << "Pushed 2\n";
+	return NULL;
 }
 
 int main(int argc, char const *argv[])
@@ -42,13 +44,13 @@ int main(int argc, char const *argv[])
 	//s->push(b);
 	//s->push(a);
 
-   	pthread_create(&threads[0],NULL,pushone,s);
-   	pthread_create(&threads[1],NULL,pushtwo,s);
+   	pthread_create(&threads[0], NULL, pushone, s);
+   	pthread_create(&threads[1], NULL, pushtwo, s);
 	
    	// cout << "Started\n";
 
-	pthread_join(threads[0],NULL);
-	pthread_join(threads[1],NULL);
+	pthread_join(threads[0], NULL);
+	pthread_join(threads[1], NULL);
 
 	// cout << "Joined\n";
 	

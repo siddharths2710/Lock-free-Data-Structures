@@ -4,7 +4,7 @@ using namespace std;
 
 mutex mtx;
 
-Stack::Stack():top(NULL){
+Stack::Stack(): top(nullptr){
 
 }
 
@@ -13,14 +13,15 @@ void Stack::push(Node *n)
 	//mtx.lock();
 	lock_guard<mutex> gu(mtx);
 
-	if (this->top == NULL)
+	if (this->top == nullptr)
 		this->top = n;
 	else {
-		this->top->setNext(n);
+		// this->top->setNext(n);
+		n->setNext(top);
 		this->top = n;
 	}
 
-	// mtx.unlock();	
+	// mtx.unlock();
 }
 
 
@@ -29,14 +30,14 @@ Node* Stack::pop()
 	// mtx.lock();
 	lock_guard<mutex> gu(mtx);
 
-	if(this->top != NULL)
+	if(this->top != nullptr)
 	{
+		Node* tmp = this->top;
 		this->top = this->top->getNext();
+		return tmp;
 	}
-
 	// mtx.unlock();
-	
-	return top;
+	return nullptr;
 }
 
 Node* Stack::peek()
@@ -50,12 +51,12 @@ ostream& operator<<(ostream &obj,  Stack &s)
 	Node* cur = s.peek();
 
 	lock_guard<mutex> gu(mtx);
-	while(cur != NULL)
+	while(cur != nullptr)
 	{
 		obj<< cur->getData() << "->";
 		cur = cur->getNext();
 	}
 
 	obj << "NULL\n";
-	return obj;	
+	return obj;
 }
