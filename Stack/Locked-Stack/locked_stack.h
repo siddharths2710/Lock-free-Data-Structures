@@ -1,5 +1,5 @@
-#ifndef STACK
-#define STACK
+#ifndef LSTACK
+#define LSTACK
 
 #include "node.h"
 
@@ -8,18 +8,18 @@
 #include <pthread.h>
 
 using namespace std;
-
-
-class Stack
+template<typename T>
+class LockedStack
 {
 	private:
-		Node* top;
+		Node<T>* top;
+		mutex mtx;
 	public:
-		Stack();
-		void push(Node* n);
-		Node* pop();
-		Node* peek();
-		friend ostream& operator<<(ostream &obj,  Stack &s);
+		LockedStack();
+		void push(T);
+		T& pop();
+		T& peek();
+		friend ostream& operator<<(ostream &obj, LockedStack<T> &s);
 };
 
 #endif

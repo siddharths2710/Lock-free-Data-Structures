@@ -1,56 +1,55 @@
-#include "stack.h"
+#include "locked_stack.h"
 using namespace std;
 #include <mutex>
 
-mutex mtx;
+template<typename T>
+LockedStack<T>::LockedStack(): top(nullptr) {}
 
-Stack::Stack(): top(nullptr){
-
-}
-
-void Stack::push(Node *n)
+template<typename T>
+void LockedStack<T>::push(T v)
 {
-	//mtx.lock();
 	lock_guard<mutex> gu(mtx);
+	Node<T>* n = new Node<T>(v);
 
 	if (this->top == nullptr)
 		this->top = n;
 	else {
-		// this->top->setNext(n);
 		n->setNext(top);
 		this->top = n;
 	}
-
-	// mtx.unlock();
 }
 
-
-Node* Stack::pop()
+template<typename T>
+T& LockedStack<T>::pop()
 {
 	// mtx.lock();
 	lock_guard<mutex> gu(mtx);
 
 	if(this->top != nullptr)
 	{
-		Node* tmp = this->top;
+		Node<T>* tmp = this->top;
 		this->top = this->top->getNext();
-		return tmp;
+		return tmp->data;
 	}
 	// mtx.unlock();
 	return nullptr;
 }
 
-Node* Stack::peek()
+template<typename T>
+T& LockedStack<T>::peek()
 {
-	lock_guard<mutex> gu(mtx);
-	return this->top;
+	// lock_guard<mutex> gu(mtx);
+	if (top != nullptr)
+		return top->data;
+	return nullptr;
 }
 
-ostream& operator<<(ostream &obj,  Stack &s)
+template<typename T>
+ostream& operator<<(ostream& obj, LockedStack<T>& s)
 {
-	Node* cur = s.peek();
+	Node<T>* cur = s.top;
 
-	lock_guard<mutex> gu(mtx);
+	lock_guard<mutex> gu(s.mtx);
 	while(cur != nullptr)
 	{
 		obj<< cur->getData() << "->";
