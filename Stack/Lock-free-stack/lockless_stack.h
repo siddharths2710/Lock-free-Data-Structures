@@ -1,24 +1,19 @@
-#ifndef STACK
-#define STACK
+#ifndef LCSTACK
+#define LCSTACK
 
 #include "node.h"
-#include <atomic>
-#include <mutex>
-#include <string>
 #include <iostream>
-#include <pthread.h>
+#include <atomic>
 
 using namespace std;
-extern mutex mtx;
 class Stack
 {
 	private:
 		atomic<Node *> top;
 	public:
 		Stack();
-		void push(void *n);	
-		Node* pop_lockfree();
-		Node* pop_lock();
+		void push(int v);
+		Node* pop();
 		Node* get_top();
 		friend ostream& operator<<(ostream &obj,  Stack &s);
 };

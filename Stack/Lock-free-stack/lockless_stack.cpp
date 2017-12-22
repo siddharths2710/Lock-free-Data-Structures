@@ -1,26 +1,22 @@
-#include "stack.h"
+#include <iostream>
+#include "lockless_stack.h"
 using namespace std;
 
-mutex mtx;
+Stack::Stack(): top(NULL) {}
 
-Stack::Stack():top(NULL){
-
-}
-
-void Stack::push(void *np)
+void Stack::push(int v)
 {
-	Node *n = (Node*)np;
+	Node* n = new Node(v);
 	while(1)
 	{
 		Node * old_top = this->top.load(memory_order_relaxed);
 		n->setNext(old_top);
-		if ( (this->top).compare_exchange_weak( old_top, n,memory_order_release,memory_order_relaxed) )
-      		return;
-	}	
+		if ((this->top).compare_exchange_weak( old_top, n, memory_order_release, memory_order_relaxed))
+			return;
+	}
 }
 
-
-Node* Stack::pop_lockfree()
+Node* Stack::pop()
 {
 	while(1)
 	{
@@ -28,23 +24,9 @@ Node* Stack::pop_lockfree()
 		if(top == NULL)
 			return NULL;
 		Node * new_top = top->getNext();
-		if( (this->top).compare_exchange_weak( top, new_top,memory_order_release,memory_order_relaxed) )
+		if((this->top).compare_exchange_weak( top, new_top,memory_order_release,memory_order_relaxed))
 			return this->top.load(memory_order_relaxed);
 	}
-}
-
-Node* Stack::pop_lock()
-{
-	mtx.lock();
-
-	Node *top = this->top.load(memory_order_relaxed);
-	if(top == NULL)
-		return NULL;
-	top = top->getNext();
-	
-	mtx.unlock();
-	
-	return top;
 }
 
 Node* Stack::get_top()
@@ -63,5 +45,5 @@ ostream& operator<<(ostream &obj,  Stack &s)
 	}
 
 	obj<<"NULL\n";
-	return obj;	
+	return obj;
 }
