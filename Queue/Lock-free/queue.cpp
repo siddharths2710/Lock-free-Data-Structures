@@ -18,7 +18,7 @@ void Queue::enqueue(void *np)
 	while(1)
 	{
 		Node * old_rear = this->rear.load(memory_order_relaxed);
-		n->setNext(old_rear);
+		old_rear->setNext(n);
 		if ( (this->rear).compare_exchange_weak( old_rear, n,memory_order_release,memory_order_relaxed) )
       		return;
 	}	
