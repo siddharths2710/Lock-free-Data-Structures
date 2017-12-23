@@ -1,4 +1,4 @@
-CC=g++
+CC=g++-5
 run: client.o locked_stack.o node.o
 	$(CC) -std=c++11 -pthread -o run client.o locked_stack.o node.o
 client.o: client.cpp locked_stack.h

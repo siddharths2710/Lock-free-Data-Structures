@@ -5,8 +5,7 @@
 using namespace std;
 
 #define NUM_THREADS 2
-//#define NO_ELE 1000000
-#define NO_ELE 10
+#define NO_ELE 1000000
 void push_odd(LockedStack* s)
 {
 	for (int i = 1; i < NO_ELE; i += 2) {
@@ -33,7 +32,7 @@ int main(int argc, char const *argv[])
 	odd_thread.join();
 	even_thread.join();
 	
-	 cout << (*s);
+	// cout << (*s);
 	cout << endl;
 
 	return 0;

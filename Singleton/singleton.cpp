@@ -2,9 +2,6 @@
 #include <mutex>
 #include "singleton.h"
 
-// Singleton* Singleton::inst;
-// std::mutex Singleton::mutex_inst;
-
 Singleton::Singleton() {}
 
 // Singleton* Singleton::getInstance() {
@@ -31,7 +28,7 @@ Singleton* Singleton::getInstance() {
 		std::cout << "Inside\n";// << std::endl;
 		tmp = new Singleton;
 		Singleton* val = nullptr;
-		if (m_instance.compare_exchange_strong(val, tmp, std::memory_order_relaxed)) {
+		if (!m_instance.compare_exchange_strong(val, tmp, std::memory_order_relaxed)) {
 			tmp = m_instance.load(std::memory_order_relaxed);
 			std::cout << "Inside Inside" << std::endl;
 		}
