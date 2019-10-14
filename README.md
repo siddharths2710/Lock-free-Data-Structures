@@ -12,3 +12,7 @@ This repo contains our version of several thread-safe implementations of well kn
 
 - [Shreyash S Sarnayak](https://github.com/shreyash14s)
 - [Siddharth Srinivasan](https://github.com/siddharths2710)
+
+## Blog Post
+
+ - [Wordpress - Lock-free Data Structures ](https://siddharths2710.wordpress.com/2017/12/29/lock-free-data-structures/)
